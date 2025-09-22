@@ -16,6 +16,6 @@ set(SFML_INCS "lib/SFML/include")
 link_directories("${CMAKE_BINARY_DIR}/lib/SFML/lib")
 
 #### Practical 2 ####
-add_executable(pong main.cpp)
+add_executable(pong main.cpp "main.h")
 target_include_directories(pong PRIVATE ${SFML_INCS})
 target_link_libraries(pong sfml-graphics)
