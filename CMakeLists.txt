@@ -15,7 +15,18 @@ add_subdirectory("lib/SFML")
 set(SFML_INCS "lib/SFML/include")
 link_directories("${CMAKE_BINARY_DIR}/lib/SFML/lib")
 
+add_custom_target(copy_resources ALL COMMAND ${CMAKE_COMMAND} 
+  -E copy_directory
+    "${PROJECT_SOURCE_DIR}/res"
+    ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/res
+)
+
 #### Practical 2 ####
 add_executable(pong main.cpp "main.h")
 target_include_directories(pong PRIVATE ${SFML_INCS})
 target_link_libraries(pong sfml-graphics)
+set_target_properties(pong 
+    PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY
+    ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+)
+ add_dependencies(pong copy_resources)
