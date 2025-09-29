@@ -1,4 +1,4 @@
-project(pong)
+project(space_invaders)
 cmake_minimum_required(VERSION 3.11)
 # Require modern C++
 set(CMAKE_CXX_STANDARD 14)
@@ -22,11 +22,11 @@ add_custom_target(copy_resources ALL COMMAND ${CMAKE_COMMAND}
 )
 
 #### Practical 2 ####
-add_executable(pong main.cpp "main.h")
-target_include_directories(pong PRIVATE ${SFML_INCS})
-target_link_libraries(pong sfml-graphics)
-set_target_properties(pong 
+add_executable(space_invaders main.cpp "main.h")
+target_include_directories(space_invaders PRIVATE ${SFML_INCS})
+target_link_libraries(space_invaders sfml-graphics)
+set_target_properties(space_invaders 
     PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
 )
- add_dependencies(pong copy_resources)
+ add_dependencies(space_invaders copy_resources)
