@@ -1,4 +1,5 @@
 #include <iostream>
+#include <SFML/Graphics.hpp>
 #include "ship.hpp"
 #include "game_system.hpp"
 #include "game_parameters.hpp"
@@ -51,7 +52,34 @@ void Invader::move_all_down() {
     direction = !direction;
     speed += Invader::acceleration;
     for (std::shared_ptr<Ship>& ship : GameSystem::ships) {
+        if (ship != std::dynamic_pointer_cast<Invader>(ship)) {
+            continue;
+        }
         // Move down
         ship->move({ 0.0f, Ship::drop_distance });
     }
+}
+
+// ======================================== Player ========================================
+Player::Player() :
+    Ship(sf::IntRect(sf::Vector2i(Parameters::sprite_size * 5, Parameters::sprite_size),
+        sf::Vector2i(Parameters::sprite_size, Parameters::sprite_size))) {
+    setOrigin(Parameters::sprite_size / 2.f, Parameters::sprite_size / 2.f);
+    setPosition(Parameters::game_width / 2.f, Parameters::game_height - static_cast<float>(Parameters::sprite_size));
+}
+
+void Player::update(const float& dt) {
+    Ship::update(dt);
+    //Move left
+    float direction = 0.0f;
+    if (sf::Keyboard::isKeyPressed(Parameters::controls[0]) || sf::Keyboard::isKeyPressed(Parameters::controls[2])) {
+        direction--;
+    }
+    if (sf::Keyboard::isKeyPressed(Parameters::controls[1]) || sf::Keyboard::isKeyPressed(Parameters::controls[3])) {
+        direction++;
+    }
+    this->move(sf::Vector2f(direction * Parameters::player_speed * dt, 0.f));
+
+    //Move Right
+
 }

@@ -8,13 +8,13 @@ std::vector<std::shared_ptr<Ship>> GameSystem::ships;
 bool GameSystem::invaders_hit_wall = false;
 
 void GameSystem::init() {
+    ships.push_back(std::make_shared<Player>());
     for (float row = 0; row < Parameters::rows; ++row) {
         sf::IntRect rect = sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(32, 32));
         for (float column = 0; column < Parameters::columns; ++column) {
             sf::Vector2f position = {(column * 32.0f) + 100, (row * 32.0f) + 100};
             std::shared_ptr<Invader> invader = std::make_shared<Invader>(rect, position);
             ships.push_back(invader);
-
         }
     }
 }

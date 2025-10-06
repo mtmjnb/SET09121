@@ -7,4 +7,11 @@ struct Parameters {
     static constexpr int rows = 5;
     static constexpr int columns = 11;
     static constexpr float time_step = 0.017f; // 60 fps
+    static constexpr sf::Keyboard::Key controls[4] = {
+        sf::Keyboard::A,   // Player Left
+        sf::Keyboard::D,   // Player Right
+        sf::Keyboard::Left,  // Player Left
+        sf::Keyboard::Right // Player Right
+    };
+    static constexpr float player_speed = 400.f;
 };

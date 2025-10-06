@@ -25,3 +25,9 @@ class Invader : public Ship {
         static float speed;
         static float acceleration;
 };
+
+class Player : public Ship {
+    public:
+        Player();
+        void update(const float& dt) override;
+};
