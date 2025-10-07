@@ -10,7 +10,7 @@ int main() {
     GameSystem::init();
 
     while (window.isOpen()) {
-        //Calculate dt
+        // Calculate delta time
         static sf::Clock clock;
         const float delta_time = clock.restart().asSeconds();
 

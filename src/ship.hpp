@@ -9,8 +9,11 @@ class Ship : public sf::Sprite {
         Ship(sf::IntRect int_rect);  // Constructor that takes a sprite
         virtual ~Ship() = 0;  // Pure virtual deconstructor - makes this an abstract class and avoids undefined behaviour!
         virtual void update(const float& delta_time);  // Update, virtual so can be overridden, but not pure virtual
+        bool is_exploded() const;
+        virtual void explode();
     protected:
-        sf::IntRect _sprite;
+        sf::IntRect sprite;
+        bool exploded = false;
 };
 
 class Invader : public Ship {

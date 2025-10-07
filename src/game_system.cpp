@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "game_system.hpp"
 #include "game_parameters.hpp"
+#include "bullet.hpp"
 
 sf::Texture GameSystem::spritesheet;
 std::vector<std::shared_ptr<Ship>> GameSystem::ships;
@@ -17,6 +18,7 @@ void GameSystem::init() {
             ships.push_back(invader);
         }
     }
+    Bullet::init();
 }
 
 void GameSystem::update(const float& delta_time) {
@@ -27,12 +29,14 @@ void GameSystem::update(const float& delta_time) {
     if (GameSystem::invaders_hit_wall) {
         Invader::move_all_down();
     }
+    Bullet::update(delta_time);
 }
 
 void GameSystem::render(sf::RenderWindow &window) {
     for (const std::shared_ptr<Ship> &ship : ships) {
         window.draw(*(ship.get()));
     }
+    Bullet::render(window);
 }
 
 void GameSystem::clean() {
