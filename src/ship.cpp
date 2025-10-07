@@ -51,10 +51,18 @@ Invader::Invader(sf::IntRect int_rect, sf::Vector2f position) : Ship(int_rect) {
 void Invader::update(const float& delta_time) {
     Ship::update(delta_time);
 
+    static float firetime = 0.0f;
+    firetime -= delta_time;
+
     move(delta_time * (direction ? 1.0f : -1.0f) * speed, 0.0f);
 
     if ((direction && getPosition().x > Parameters::game_width - Parameters::sprite_size / 2.f) || (!direction && getPosition().x < Parameters::sprite_size / 2.f)) {
         GameSystem::invaders_hit_wall = true;
+    }
+
+    if (firetime <= 0 && rand() % 100 == 0) {
+        Bullet::fire(getPosition(), false);
+        firetime = 4.0f + (rand() % 60);
     }
 }
 
@@ -94,7 +102,7 @@ void Player::update(const float& delta_time) {
     }
     this->move(sf::Vector2f(direction * Parameters::player_speed * delta_time, 0.f));
 
-    if (firetime <= 0 && sf::Keyboard::isKeyPressed(Parameters::controls[4])) {
+    if (firetime <= 0 && (sf::Keyboard::isKeyPressed(Parameters::controls[4]) || sf::Keyboard::isKeyPressed(Parameters::controls[5]) || sf::Keyboard::isKeyPressed(Parameters::controls[6]))) {
         Bullet::fire(getPosition(), true);
         firetime = 0.7f;
     }

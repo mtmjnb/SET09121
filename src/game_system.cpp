@@ -7,11 +7,12 @@
 sf::Texture GameSystem::spritesheet;
 std::vector<std::shared_ptr<Ship>> GameSystem::ships;
 bool GameSystem::invaders_hit_wall = false;
+bool GameSystem::playing = true;
 
 void GameSystem::init() {
     ships.push_back(std::make_shared<Player>());
     for (float row = 0; row < Parameters::rows; ++row) {
-        sf::IntRect rect = sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(32, 32));
+        sf::IntRect rect = sf::IntRect({Parameters::sprite_size * (int)row, Parameters::sprite_size * 0}, {Parameters::sprite_size, Parameters::sprite_size});
         for (float column = 0; column < Parameters::columns; ++column) {
             sf::Vector2f position = {(column * 32.0f) + 100, (row * 32.0f) + 100};
             std::shared_ptr<Invader> invader = std::make_shared<Invader>(rect, position);

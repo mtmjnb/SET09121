@@ -9,6 +9,7 @@ struct GameSystem {
     static sf::Texture spritesheet;
     static std::vector<std::shared_ptr<Ship>> ships;  // vector of shared pointers to Ships
     static bool invaders_hit_wall;
+    static bool playing;
 
     // Game system functions
     static void init();

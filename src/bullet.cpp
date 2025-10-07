@@ -1,3 +1,4 @@
+#include <iostream>
 #include "game_system.hpp"
 #include "game_parameters.hpp"
 #include "bullet.hpp"
@@ -59,6 +60,10 @@ void Bullet::_update(const float& delta_time) {
             ship->getGlobalBounds().intersects(bounding_box)) {
             ship->explode();
             setPosition(sf::Vector2f(-100, -100));  // Warp bullet off-screen
+            if (ship == player) {
+                std::cout << "You Died :(" << std::endl;
+                GameSystem::playing = false;
+            }
             return;
         }
     }
