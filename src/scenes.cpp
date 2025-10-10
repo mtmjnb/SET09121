@@ -19,6 +19,13 @@ void MazeScene::reset() {
 
 void MazeScene::update(const float& delta_time) {
     Scene::update(delta_time);
+    if (LevelSystem::get_tile_at(entities[0]->get_position()) == LevelSystem::END) {
+        if (MazeScene::file_path == std::string(Parameters::maze_1)) {
+            MazeScene::file_path = Parameters::maze_2;
+            reset();
+        }
+        return;
+    }
 }
 
 void MazeScene::render(sf::RenderWindow& window) {

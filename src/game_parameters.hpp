@@ -16,5 +16,6 @@ struct Parameters {
         sf::Keyboard::Right,  // Player Right
     };
     static constexpr const char* maze_1 = "res/levels/maze.txt";
+    static constexpr const char* maze_2 = "res/levels/maze_2.txt";
     static constexpr float player_speed = 400.f;
 };

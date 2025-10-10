@@ -117,7 +117,7 @@ LevelSystem::Tile LevelSystem::get_tile(sf::Vector2i position) {
     if (position.x > LevelSystem::width || position.y > LevelSystem::height) {
         throw std::string("Tile out of range: ") + std::to_string(position.x) + "," + std::to_string(position.y) + ")";
     }
-    return LevelSystem::tiles[(position.y * static_cast<size_t>(LevelSystem::width)) + position.x];  // TODO: Correct?
+    return LevelSystem::tiles[(position.y * static_cast<size_t>(LevelSystem::width)) + position.x];
 }
 
 LevelSystem::Tile LevelSystem::get_tile_at(sf::Vector2f vector) {
