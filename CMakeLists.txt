@@ -1,4 +1,4 @@
-project(space_invaders)
+project(tile_engine)
 cmake_minimum_required(VERSION 3.11)
 # Require modern C++
 set(CMAKE_CXX_STANDARD 14)
@@ -21,12 +21,12 @@ add_custom_target(copy_resources ALL COMMAND ${CMAKE_COMMAND}
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/res
 )
 
-#### Practical 2 ####
-add_executable(space_invaders "src/main.cpp" "src/game_system.cpp" "src/ship.cpp" "src/bullet.cpp")
-target_include_directories(space_invaders PRIVATE ${SFML_INCS})
-target_link_libraries(space_invaders sfml-graphics)
-set_target_properties(space_invaders 
+#### Practical 4 ####
+add_executable(tile_engine "src/main.cpp" "src/game_system.cpp"   "src/entity.cpp" "src/player.cpp" "src/scenes.cpp")
+target_include_directories(tile_engine PRIVATE ${SFML_INCS})
+target_link_libraries(tile_engine sfml-graphics)
+set_target_properties(tile_engine 
     PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
 )
- add_dependencies(space_invaders copy_resources)
+ add_dependencies(tile_engine copy_resources)

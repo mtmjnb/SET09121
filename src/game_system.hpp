@@ -1,19 +1,33 @@
 #pragma once
-#include <vector>
-#include <memory>
 #include <SFML/Graphics.hpp>
-#include "ship.hpp"
+#include "entity.hpp"
 
-struct GameSystem {
-    //The global variables goes here
-    static sf::Texture spritesheet;
-    static std::vector<std::shared_ptr<Ship>> ships;  // vector of shared pointers to Ships
-    static bool invaders_hit_wall;
-    static bool playing;
+class Scene {
+    public:
+        Scene() = default;
+        virtual void load() = 0;
+        std::vector<std::shared_ptr<Entity>>& get_entities() {return entities;}
 
-    // Game system functions
-    static void init();
-    static void clean();
-    static void update(const float& delta_time);
-    static void render(sf::RenderWindow& window);
+        virtual void update(const float& delta_time);  // Update all entities in the scene
+        virtual void render(sf::RenderWindow& window);  // Render all entities in the scene
+        
+        virtual void unload();
+        virtual ~Scene() = default;
+
+    protected:
+        std::vector<std::shared_ptr<Entity>> entities;
+};
+
+class GameSystem {
+    public:
+        static void start(unsigned int width, unsigned int height, const std::string& name, const float& time_step);  // Start the game
+        static void clean();
+        static void reset();
+        static void set_active_scene(const std::shared_ptr<Scene>& active_scene);
+
+    private:
+        static void init();
+        static void update(const float& delta_time);
+        static void render(sf::RenderWindow& window);
+        static std::shared_ptr<Scene> active_scene;
 };
