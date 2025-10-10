@@ -8,7 +8,7 @@ class Entity {
         Entity() = delete;
         virtual ~Entity() = default;
 
-        virtual void update(const float& delta_time);
+        virtual void update(const float& delta_time);  // Update position
         virtual void render(sf::RenderWindow& window) const = 0;
 
         const sf::Vector2f get_position();

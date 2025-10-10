@@ -1,3 +1,5 @@
+#include <iostream>
+#include "tile_level_loader/level_system.hpp"
 #include "scenes.hpp"
 #include "game_parameters.hpp"
 #include "player.hpp"
@@ -11,7 +13,8 @@ void MazeScene::load() {
 
 }
 void MazeScene::reset() {
-    entities[0]->set_position(sf::Vector2f(Parameters::game_width / 2, Parameters::game_height / 2));
+    LevelSystem::load_level(MazeScene::file_path);
+    entities[0]->set_position(LevelSystem::get_start_position() + sf::Vector2f(LevelSystem::get_tile_size() / 2.0f, LevelSystem::get_tile_size() / 2.0f));  // Move shape to center of the start posistion tile
 }
 
 void MazeScene::update(const float& delta_time) {
@@ -20,6 +23,9 @@ void MazeScene::update(const float& delta_time) {
 
 void MazeScene::render(sf::RenderWindow& window) {
     Scene::render(window);
+    LevelSystem::render(window);
 }
 
-void MazeScene::set_file_path(const std::string& file_path) {}
+void MazeScene::set_file_path(const std::string& file_path) {
+    MazeScene::file_path = file_path;
+}

@@ -8,8 +8,8 @@ class MazeScene : public Scene {
         void load() override;  // Loads entities
 
         void update(const float& delta_time) override;  // Update Scene
-        void render(sf::RenderWindow& window) override;  // Render Scene
-        void reset();  // Resets entities
+        void render(sf::RenderWindow& window) override;  // Render Maze Scene
+        void reset();  // Loads level and resets entities
 
         void set_file_path(const std::string& file_path);
     private:

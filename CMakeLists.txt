@@ -15,6 +15,11 @@ add_subdirectory("lib/SFML")
 set(SFML_INCS "lib/SFML/include")
 link_directories("${CMAKE_BINARY_DIR}/lib/SFML/lib")
 
+#### level system ####
+add_library(tile_level STATIC src/tile_level_loader/level_system.cpp)
+target_include_directories(tile_level INTERFACE tile_level_loader)
+target_link_libraries(tile_level sfml-graphics)
+
 add_custom_target(copy_resources ALL COMMAND ${CMAKE_COMMAND} 
   -E copy_directory
     "${PROJECT_SOURCE_DIR}/res"
@@ -24,7 +29,7 @@ add_custom_target(copy_resources ALL COMMAND ${CMAKE_COMMAND}
 #### Practical 4 ####
 add_executable(tile_engine "src/main.cpp" "src/game_system.cpp"   "src/entity.cpp" "src/player.cpp" "src/scenes.cpp")
 target_include_directories(tile_engine PRIVATE ${SFML_INCS})
-target_link_libraries(tile_engine sfml-graphics)
+target_link_libraries(tile_engine tile_level sfml-graphics)
 set_target_properties(tile_engine 
     PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
