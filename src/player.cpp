@@ -1,3 +1,4 @@
+#include "tile_level_loader/level_system.hpp"
 #include "player.hpp"
 #include "game_parameters.hpp"
 
@@ -19,7 +20,16 @@ void Player::update(const float& delta_time) {
     if (sf::Keyboard::isKeyPressed(Parameters::controls[2]) || sf::Keyboard::isKeyPressed(Parameters::controls[6])) {  // Down
         direction_y++;
     }
-    this->move(sf::Vector2f(direction_x * Parameters::player_speed * delta_time, direction_y * Parameters::player_speed * delta_time));
+
+    // x and y should be checked individually incase movement on one axis isn't alowed but the other is
+    sf::Vector2f position_change_x = sf::Vector2f(direction_x * Parameters::player_speed * delta_time, 0.0f);
+    if (valid_move(this->get_position() + position_change_x)) {
+        this->move(position_change_x);
+    }
+    sf::Vector2f position_change_y = sf::Vector2f(0.0f, direction_y * Parameters::player_speed * delta_time);
+    if (valid_move(this->get_position() + position_change_y)) {
+        this->move(position_change_y);
+    }
 }
 
 Player::Player()
@@ -30,4 +40,8 @@ Player::Player()
 
 void Player::render(sf::RenderWindow& window) const {
     window.draw(*shape);
+}
+
+bool Player::valid_move(sf::Vector2f position) {
+    return (LevelSystem::get_tile_at(position) != LevelSystem::WALL);
 }

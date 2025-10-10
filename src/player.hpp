@@ -10,4 +10,5 @@ class Player : public Entity {
     private:
         static constexpr float radius = 25.f;
         static constexpr float speed = 200.f;
+        bool valid_move(sf::Vector2f position);
 };
