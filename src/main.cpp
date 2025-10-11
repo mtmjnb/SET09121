@@ -4,6 +4,7 @@
 
 int main() {
     Scenes::maze = std::make_shared<MazeScene>();
+    Scenes::end = std::make_shared<EndScene>();
     std::static_pointer_cast<MazeScene>(Scenes::maze)->set_file_path(Parameters::maze_1);
     Scenes::maze->load();
     GameSystem::set_active_scene(Scenes::maze);

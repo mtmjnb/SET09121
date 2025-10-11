@@ -5,6 +5,7 @@
 #include "player.hpp"
 
 std::shared_ptr<Scene> Scenes::maze;
+std::shared_ptr<Scene> Scenes::end;
 
 void MazeScene::load() {
     std::shared_ptr<Entity> player = std::make_shared<Player>();
@@ -23,6 +24,9 @@ void MazeScene::update(const float& delta_time) {
         if (MazeScene::file_path == std::string(Parameters::maze_1)) {
             MazeScene::file_path = Parameters::maze_2;
             reset();
+        } else if (MazeScene::file_path == std::string(Parameters::maze_2)) {
+            unload();  // Unload the maze scene
+            GameSystem::set_active_scene(Scenes::end);  // Switch the active scene to the end scene
         }
         return;
     }
@@ -36,3 +40,7 @@ void MazeScene::render(sf::RenderWindow& window) {
 void MazeScene::set_file_path(const std::string& file_path) {
     MazeScene::file_path = file_path;
 }
+
+void EndScene::load() {}
+
+void EndScene::render(sf::RenderWindow& window) {}

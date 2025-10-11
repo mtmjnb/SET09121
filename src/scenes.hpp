@@ -16,6 +16,17 @@ class MazeScene : public Scene {
         std::string file_path;
 };
 
+class EndScene : public Scene {
+    public:
+        EndScene() = default;
+        void load() override;
+        void render(sf::RenderWindow& window) override;
+    private:
+        sf::Text win_text;
+        sf::Font font;
+};
+
 struct Scenes {
     static std::shared_ptr<Scene> maze;
+    static std::shared_ptr<Scene> end;
 };
