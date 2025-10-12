@@ -25,6 +25,9 @@ void MazeScene::update(const float& delta_time) {
             MazeScene::file_path = Parameters::maze_2;
             reset();
         } else if (MazeScene::file_path == std::string(Parameters::maze_2)) {
+            MazeScene::file_path = Parameters::maze_3;
+            reset();
+        } else if (MazeScene::file_path == std::string(Parameters::maze_3)) {
             unload();  // Unload the maze scene
             GameSystem::set_active_scene(Scenes::end);  // Switch the active scene to the end scene
         }
