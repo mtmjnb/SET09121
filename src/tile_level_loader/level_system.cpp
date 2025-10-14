@@ -39,11 +39,10 @@ void LevelSystem::load_level(const std::string& path, float tile_size) {
     // Load in file to buffer
     std::ifstream fh(path);
     if (fh.good()) {
-        fh.seekg(0, std::ios::end);
-        buffer.resize(fh.tellg());
-        fh.seekg(0);
-        fh.read(&buffer[0], buffer.size());
-        fh.close();
+        buffer.assign(
+            (std::istreambuf_iterator<char>(fh)),
+            (std::istreambuf_iterator<char>())
+        );
     } else {
         throw std::string("Couldn't open level file: ") + path;
     }
