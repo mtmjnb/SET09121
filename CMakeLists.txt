@@ -1,4 +1,4 @@
-project(tile_engine)
+project(pacman)
 cmake_minimum_required(VERSION 3.11)
 # Require modern C++
 set(CMAKE_CXX_STANDARD 14)
@@ -16,9 +16,10 @@ set(SFML_INCS "lib/SFML/include")
 link_directories("${CMAKE_BINARY_DIR}/lib/SFML/lib")
 
 #### level system ####
-add_library(tile_level STATIC src/tile_level_loader/level_system.cpp)
-target_include_directories(tile_level INTERFACE tile_level_loader)
-target_link_libraries(tile_level sfml-graphics)
+add_library(engine STATIC engine/game_system.cpp engine/entity.cpp engine/tile_level_loader/level_system.cpp "engine/renderer.cpp")
+target_include_directories(engine INTERFACE tile_level_loader)
+target_include_directories(engine PUBLIC engine)
+target_link_libraries(engine sfml-graphics)
 
 add_custom_target(copy_resources ALL COMMAND ${CMAKE_COMMAND} 
   -E copy_directory
@@ -26,12 +27,12 @@ add_custom_target(copy_resources ALL COMMAND ${CMAKE_COMMAND}
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/res
 )
 
-#### Practical 4 ####
-add_executable(tile_engine "src/main.cpp" "src/game_system.cpp"   "src/entity.cpp" "src/player.cpp" "src/scenes.cpp")
-target_include_directories(tile_engine PRIVATE ${SFML_INCS})
-target_link_libraries(tile_engine tile_level sfml-graphics)
-set_target_properties(tile_engine 
+#### Practical 5 ####
+add_executable(pacman "src/main.cpp" "src/player.cpp" "src/scenes.cpp" "engine/renderer.cpp")
+target_include_directories(pacman PRIVATE ${SFML_INCS} .)
+target_link_libraries(pacman engine sfml-graphics)
+set_target_properties(pacman 
     PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
 )
- add_dependencies(tile_engine copy_resources)
+ add_dependencies(pacman copy_resources)

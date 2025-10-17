@@ -1,4 +1,5 @@
-#include "tile_level_loader/level_system.hpp"
+#include "engine/tile_level_loader/level_system.hpp"
+#include "engine/renderer.hpp"
 #include "player.hpp"
 #include "game_parameters.hpp"
 
@@ -38,8 +39,8 @@ Player::Player()
     shape->setOrigin(sf::Vector2f(radius, radius));
 }
 
-void Player::render(sf::RenderWindow& window) const {
-    window.draw(*shape);
+void Player::render() const {
+    Renderer::queue(shape.get());
 }
 
 bool Player::valid_move(sf::Vector2f position) {

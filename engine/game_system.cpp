@@ -1,23 +1,25 @@
 #include <SFML/Graphics.hpp>
 #include "game_system.hpp"
-#include "game_parameters.hpp"
-#include "scenes.hpp"
+#include "renderer.hpp"
+
+EntityManager Scene::entity_manager;
 
 void Scene::update(const float& delta_time) {
-    for (std::shared_ptr<Entity>& entity : entities) {
+    Renderer::update(delta_time);
+    for (std::shared_ptr<Entity>& entity : entity_manager.list) {
         entity->update(delta_time);
     }
 }
 
-void Scene::render(sf::RenderWindow& window) {
-    for (std::shared_ptr<Entity>& entity : entities) {
-        entity->render(window);
+void Scene::render() {
+    for (std::shared_ptr<Entity>& entity : entity_manager.list) {
+        entity->render();
     }
 }
 
 void Scene::unload() {}
 
-std::shared_ptr<Scene> GameSystem::active_scene = std::make_shared<MazeScene>();
+std::shared_ptr<Scene> GameSystem::active_scene;
 
 void GameSystem::init() {}
 
@@ -25,19 +27,20 @@ void GameSystem::update(const float& delta_time) {
     GameSystem::active_scene->update(delta_time);
 }
 
-void GameSystem::render(sf::RenderWindow &window) {
-    GameSystem::active_scene->render(window);
+void GameSystem::render() {
+    GameSystem::active_scene->render();
 }
 
 void GameSystem::clean() {}
 
 void GameSystem::start(unsigned int width, unsigned int height, const std::string& name, const float& time_step) {
     sf::RenderWindow window(sf::VideoMode({width, height}), name);
+    Renderer::initialise(window);
     GameSystem::init();
     sf::Event event;
     while (window.isOpen()) {
         static sf::Clock clock;
-        float dt = clock.restart().asSeconds();
+        float delta_time = clock.restart().asSeconds();
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
@@ -49,8 +52,9 @@ void GameSystem::start(unsigned int width, unsigned int height, const std::strin
             window.close();
         }
         window.clear();
-        update(dt);
-        render(window);
+        update(delta_time);
+        render();
+        Renderer::render();
         sf::sleep(sf::seconds(time_step));
         //Wait for Vsync
         window.display();

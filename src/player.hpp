@@ -1,11 +1,11 @@
 #pragma once
-#include "entity.hpp"
+#include "engine/entity.hpp"
 
 class Player : public Entity {
     public:
         void update(const float& delta_time) override;
         Player();
-        void render(sf::RenderWindow& window) const override;
+        void render() const override;
 
     private:
         static constexpr float radius = 25.f;

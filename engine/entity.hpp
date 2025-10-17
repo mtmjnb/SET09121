@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include <vector>
 
 class Entity {
     public:
@@ -9,7 +10,7 @@ class Entity {
         virtual ~Entity() = default;
 
         virtual void update(const float& delta_time);  // Update position
-        virtual void render(sf::RenderWindow& window) const = 0;
+        virtual void render() const = 0;
 
         const sf::Vector2f get_position();
         void set_position(const sf::Vector2f& position);
@@ -18,4 +19,10 @@ class Entity {
     protected:
         std::unique_ptr<sf::Shape> shape;
         sf::Vector2f position;
+};
+
+struct EntityManager {
+    std::vector<std::shared_ptr<Entity>> list;
+    void update(float delta_time);
+    void render();
 };

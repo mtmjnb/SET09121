@@ -10,7 +10,7 @@ class LevelSystem {
         enum Tile {EMPTY, START, END, WALL, ENEMY, WAYPOINT};
 
         static void load_level(const std::string&, float tile_size = 100.f);
-        static void render(sf::RenderWindow& window);
+        static void render();
         static sf::Color get_color(Tile tile);
         static void set_color(Tile tile, sf::Color color);
         static Tile get_tile(sf::Vector2i);  // Get Tile at grid coordinate

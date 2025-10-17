@@ -1,55 +1,59 @@
 #include <iostream>
-#include "tile_level_loader/level_system.hpp"
+#include "engine/tile_level_loader/level_system.hpp"
+#include "engine/renderer.hpp"
 #include "scenes.hpp"
 #include "game_parameters.hpp"
 #include "player.hpp"
 
-std::shared_ptr<Scene> Scenes::maze;
-std::shared_ptr<Scene> Scenes::end;
+// ================================ Scenes ================================
 
-void MazeScene::load() {
-    std::shared_ptr<Entity> player = std::make_shared<Player>();
-    entities.push_back(player);
-    reset();
+std::shared_ptr<Scene> Scenes::menu;
+std::shared_ptr<Scene> Scenes::game;
 
-}
-void MazeScene::reset() {
-    LevelSystem::load_level(MazeScene::file_path);
-    entities[0]->set_position(LevelSystem::get_start_position() + sf::Vector2f(LevelSystem::get_tile_size() / 2.0f, LevelSystem::get_tile_size() / 2.0f));  // Move shape to center of the start posistion tile
-}
+// ================================ MenuScene ================================
 
-void MazeScene::update(const float& delta_time) {
-    Scene::update(delta_time);
-    if (LevelSystem::get_tile_at(entities[0]->get_position()) == LevelSystem::END) {
-        if (MazeScene::file_path == std::string(Parameters::maze_1)) {
-            MazeScene::file_path = Parameters::maze_2;
-            reset();
-        } else if (MazeScene::file_path == std::string(Parameters::maze_2)) {
-            MazeScene::file_path = Parameters::maze_3;
-            reset();
-        } else if (MazeScene::file_path == std::string(Parameters::maze_3)) {
-            MazeScene::file_path = Parameters::maze_4;
-            reset();
-        } else if (MazeScene::file_path == std::string(Parameters::maze_4)) {
-            MazeScene::file_path = Parameters::maze_5;
-            reset();
-        } else if (MazeScene::file_path == std::string(Parameters::maze_5)) {
-            unload();  // Unload the maze scene
-            GameSystem::set_active_scene(Scenes::end);  // Switch the active scene to the end scene
-        }
-        return;
+void MenuScene::update(const float& delta_time) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+        GameSystem::set_active_scene(Scenes::game);
     }
+    Scene::update(delta_time);
+    this->text.setString("Almost Pacman");
+    this->text.setPosition((Parameters::game_width * .5f) - (this->text.getLocalBounds().width * .5f), 0);
 }
 
-void MazeScene::render(sf::RenderWindow& window) {
-    Scene::render(window);
-    LevelSystem::render(window);
+void MenuScene::render() {
+    Renderer::queue(&text);
+    Scene::render();
 }
 
-void MazeScene::set_file_path(const std::string& file_path) {
-    MazeScene::file_path = file_path;
+void MenuScene::load() {
+    // Set up the text element here!
+    font.loadFromFile("res/fonts/RobotoMono-Regular.ttf");
+    this->text.setFont(font);
+    this->text.setCharacterSize(24);
 }
 
-void EndScene::load() {}
+// ================================ GameScene ================================
 
-void EndScene::render(sf::RenderWindow& window) {}
+void GameScene::update(const float& delta_time) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab)) {
+        GameSystem::set_active_scene(Scenes::menu);
+    }
+    Scene::update(delta_time);
+}
+
+void GameScene::render() {
+    Renderer::queue(&text);
+    Scene::render();
+}
+
+void GameScene::load() {
+    font.loadFromFile("res/fonts/RobotoMono-Regular.ttf");
+    this->text.setFont(font);
+    this->text.setCharacterSize(24);
+    this->text.setPosition((Parameters::game_width * .5f) - (this->text.getLocalBounds().width * .5f), 0);
+}
+
+void GameScene::respawn() {
+
+}

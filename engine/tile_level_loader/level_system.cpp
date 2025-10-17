@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "level_system.hpp"
+#include "renderer.hpp"
 
 std::unique_ptr<LevelSystem::Tile[]> LevelSystem::tiles;
 int LevelSystem::width;
@@ -127,8 +128,8 @@ LevelSystem::Tile LevelSystem::get_tile_at(sf::Vector2f vector) {
     return get_tile(sf::Vector2i((vector - LevelSystem::offset) / (LevelSystem::tile_size)));
 }
 
-void LevelSystem::render(sf::RenderWindow& window) {
+void LevelSystem::render() {
     for (size_t i = 0; i < LevelSystem::width * LevelSystem::height; ++i) {
-        window.draw(*LevelSystem::sprites[i]);
+        Renderer::queue(LevelSystem::sprites[i].get());
     }
 }
