@@ -95,7 +95,7 @@ void GameScene::respawn() {
         GameScene::entity_manager.list.push_back(ghost);
     }
 
-    this->player->set_position(LevelSystem::get_start_position());
+    this->player->set_position(LevelSystem::get_start_position() + sf::Vector2f(LevelSystem::get_tile_size() / 2.0f, LevelSystem::get_tile_size() / 2.0f));
     this->player->get_compatible_components<ActorMovementComponent>()[0]
         ->set_speed(Parameters::player_speed);
 
@@ -128,7 +128,7 @@ void GameScene::respawn() {
         std::vector<std::shared_ptr<ActorMovementComponent>> movement_components = ghost->get_compatible_components<ActorMovementComponent>();
         if (!movement_components.empty()) {
             ghost->set_position(
-                LevelSystem::get_tile_position(ghost_spawns[rand() % ghost_spawns.size()]));
+                LevelSystem::get_tile_position(ghost_spawns[rand() % ghost_spawns.size()]) + sf::Vector2f(LevelSystem::get_tile_size() / 2.0f, LevelSystem::get_tile_size() / 2.0f));
             movement_components[0]->set_speed(Parameters::ghost_speed);
         }
     }
