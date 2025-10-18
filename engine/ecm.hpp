@@ -32,6 +32,29 @@ class Entity {
             components.push_back(component);
             return component;
         }
+
+        template <typename T> const std::vector<std::shared_ptr<T>> get_components() const {
+            static_assert(std::is_base_of<Component, T>::value, "T != component");
+            std::vector<std::shared_ptr<T>> found_components;
+            for (const auto component : this->components) {
+                if (typeid(*component) == typeid(T)) {
+                    found_components.push_back(std::dynamic_pointer_cast<T>(component));
+                }
+            }
+            return std::move(found_components);
+        }
+
+        template <typename T> const std::vector<std::shared_ptr<T>> get_compatible_component() {
+            static_assert(std::is_base_of<Component, T>::value, "T != component");
+            std::vector<std::shared_ptr<T>> found_components;
+            for (auto component : this->components) {
+                auto derived_component_ptr = dynamic_cast<T*>(&(*component));
+                if (derived_component_ptr) {
+                    found_components.push_back(std::dynamic_pointer_cast<T>(component));
+                }
+            }
+            return found_components;
+        }
     protected:
         std::vector<std::shared_ptr<Component>> components;
         sf::Vector2f position;

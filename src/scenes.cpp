@@ -58,6 +58,7 @@ void GameScene::load() {
     shape->set_shape<sf::CircleShape>(Parameters::entity_size);
     shape->get_shape().setFillColor(sf::Color::Yellow);
     shape->get_shape().setOrigin(sf::Vector2f(Parameters::entity_size, Parameters::entity_size));
+    player->add_component<PlayerMovementComponent>();
     GameScene::entity_manager.list.push_back(player);
 
     const sf::Color ghost_colors[]{ {208, 62, 25},  // Red Blinky
@@ -65,13 +66,14 @@ void GameScene::load() {
                                  {70, 191, 238},  // Cyan Inky
                                  {234, 130, 229} };  // Pink Pinky
 
-    for (int i = 0; i < std::size(ghost_colors); i++) {
+    for (int i = 0; i < std::size(ghost_colors); ++i) {
         std::shared_ptr<Entity> ghost = std::make_shared<Entity>();
         std::shared_ptr<ShapeComponent> shape = ghost->add_component<ShapeComponent>();
         shape->set_shape<sf::CircleShape>(Parameters::entity_size);
         shape->get_shape().setFillColor(ghost_colors[i % std::size(ghost_colors)]);
         shape->get_shape().setOrigin(
             sf::Vector2f(Parameters::entity_size, Parameters::entity_size));
+        ghost->add_component<EnemyAIComponent>();
         GameScene::entity_manager.list.push_back(ghost);
     }
 }
