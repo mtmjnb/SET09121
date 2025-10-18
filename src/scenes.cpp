@@ -39,6 +39,14 @@ void GameScene::update(const float& delta_time) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab)) {
         GameSystem::set_active_scene(Scenes::menu);
     }
+    auto vector_distance = [](sf::Vector2f point1, sf::Vector2f point2) -> float {
+        return sqrt((point1.x - point2.x) * (point1.x - point2.x) + (point1.y - point2.y) * (point1.y - point2.y));
+    };
+    for (const std::shared_ptr<Entity>& ghost : this->ghosts) {
+        if (vector_distance(ghost->get_position(), this->player->get_position()) < 30.0f) {
+            respawn();
+        }
+    }
 }
 
 void GameScene::render() {
@@ -76,6 +84,7 @@ void GameScene::load() {
         shape->get_shape().setOrigin(
             sf::Vector2f(Parameters::entity_size, Parameters::entity_size));
         ghost->add_component<EnemyAIComponent>();
+        ghosts.push_back(ghost);
         GameScene::entity_manager.list.push_back(ghost);
     }
 

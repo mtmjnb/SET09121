@@ -25,9 +25,10 @@ class GameScene : public Scene {
         void load() override;
 
     private:
+        std::shared_ptr<Entity> player;
+        std::vector<std::shared_ptr<Entity>> ghosts;
         sf::Text text;
         sf::Font font;
         sf::Clock scoreClock;
-        std::shared_ptr<Entity> player;
         void respawn();
 };
