@@ -32,7 +32,7 @@ class ActorMovementComponent : public Component {
         void render() override {}
         void update(const float& delta_time) override;
     protected:
-        //bool valid_move(const sf::Vector2f&);
+        bool valid_move(const sf::Vector2f&);
         float speed;
 };
 

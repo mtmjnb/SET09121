@@ -22,15 +22,15 @@ void ActorMovementComponent::update(const float& delta_time) {}
 ActorMovementComponent::ActorMovementComponent(Entity* parent)
     : speed(100.0f), Component(parent) {}
 
-//bool ActorMovementComponent::valid_move(const sf::Vector2f& position) {
-//    return (LevelSystem::get_tile_at(position) != LevelSystem::WALL);
-//}
+bool ActorMovementComponent::valid_move(const sf::Vector2f& position) {
+    return (LevelSystem::get_tile_at(position) != LevelSystem::WALL);
+}
 
 void ActorMovementComponent::move(const sf::Vector2f& position_change) {
     sf::Vector2f new_position = this->parent->get_position() + position_change;
-    //if (valid_move(new_position)) {
+    if (valid_move(new_position)) {
         this->parent->set_position(new_position);
-    //}
+    }
 }
 
 void ActorMovementComponent::move(float x, float y) {
@@ -68,13 +68,13 @@ void PlayerMovementComponent::update(const float& delta_time) {
 
     // x and y should be checked individually incase movement on one axis isn't alowed but the other is
     sf::Vector2f position_change_x = sf::Vector2f(direction_x * Parameters::player_speed * delta_time, 0.0f);
-    //if (valid_move(this->get_position() + position_change_x)) {
+    if (valid_move(this->parent->get_position() + position_change_x)) {
         this->move(position_change_x);
-    //}
+    }
     sf::Vector2f position_change_y = sf::Vector2f(0.0f, direction_y * Parameters::player_speed * delta_time);
-    //if (valid_move(this->get_position() + position_change_y)) {
+    if (valid_move(this->parent->get_position() + position_change_y)) {
         this->move(position_change_y);
-    //}
+    }
 }
 
 // ================================================================ EnemyAIComponent ================================================================

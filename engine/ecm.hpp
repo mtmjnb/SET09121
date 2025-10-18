@@ -44,7 +44,7 @@ class Entity {
             return std::move(found_components);
         }
 
-        template <typename T> const std::vector<std::shared_ptr<T>> get_compatible_component() {
+        template <typename T> const std::vector<std::shared_ptr<T>> get_compatible_components() {
             static_assert(std::is_base_of<Component, T>::value, "T != component");
             std::vector<std::shared_ptr<T>> found_components;
             for (auto component : this->components) {

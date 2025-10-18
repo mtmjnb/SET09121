@@ -28,5 +28,6 @@ class GameScene : public Scene {
         sf::Text text;
         sf::Font font;
         sf::Clock scoreClock;
+        std::shared_ptr<Entity> player;
         void respawn();
 };

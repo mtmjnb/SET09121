@@ -133,3 +133,15 @@ void LevelSystem::render() {
         Renderer::queue(LevelSystem::sprites[i].get());
     }
 }
+
+std::vector<sf::Vector2i> LevelSystem::find_tiles(LevelSystem::Tile tile) {
+    std::vector<sf::Vector2i> tile_positions;
+    for (int x = 0; x < LevelSystem::width; x++) {
+        for (int y = 0; y < LevelSystem::height; y++) {
+            if (LevelSystem::get_tile(sf::Vector2i(x, y)) == tile) {
+                tile_positions.push_back(sf::Vector2i(x, y));
+            }
+        }
+    }
+    return tile_positions;
+}

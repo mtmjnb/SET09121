@@ -20,6 +20,7 @@ class LevelSystem {
         static int get_width();
         static float get_tile_size();
         static sf::Vector2f get_start_position();
+        static std::vector<sf::Vector2i> find_tiles(Tile tile);
 
     protected:
         static std::unique_ptr<Tile[]> tiles;  // Internal array of tiles
