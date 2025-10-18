@@ -1,4 +1,3 @@
-#include <iostream>
 #include "engine/tile_level_loader/level_system.hpp"
 #include "engine/renderer.hpp"
 #include "scenes.hpp"
@@ -36,10 +35,10 @@ void MenuScene::load() {
 // ================================ GameScene ================================
 
 void GameScene::update(const float& delta_time) {
+    Scene::update(delta_time);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab)) {
         GameSystem::set_active_scene(Scenes::menu);
     }
-    Scene::update(delta_time);
 }
 
 void GameScene::render() {

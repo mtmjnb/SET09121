@@ -67,11 +67,11 @@ void PlayerMovementComponent::update(const float& delta_time) {
     }
 
     // x and y should be checked individually incase movement on one axis isn't alowed but the other is
-    sf::Vector2f position_change_x = sf::Vector2f(direction_x * Parameters::player_speed * delta_time, 0.0f);
+    sf::Vector2f position_change_x = sf::Vector2f(direction_x * this->speed * delta_time, 0.0f);
     if (valid_move(this->parent->get_position() + position_change_x)) {
         this->move(position_change_x);
     }
-    sf::Vector2f position_change_y = sf::Vector2f(0.0f, direction_y * Parameters::player_speed * delta_time);
+    sf::Vector2f position_change_y = sf::Vector2f(0.0f, direction_y * this->speed * delta_time);
     if (valid_move(this->parent->get_position() + position_change_y)) {
         this->move(position_change_y);
     }
@@ -80,4 +80,45 @@ void PlayerMovementComponent::update(const float& delta_time) {
 // ================================================================ EnemyAIComponent ================================================================
 
 EnemyAIComponent::EnemyAIComponent(Entity* parent)
-    : ActorMovementComponent(parent) {}
+    : ActorMovementComponent(parent) {
+    this->state = ROTATING;
+}
+
+static const sf::Vector2i directions[] = { {1, 0}, {0, 1}, {0, -1}, {-1, 0} };
+
+void EnemyAIComponent::update(const float& delta_time) {
+    const float amount_to_move = static_cast<float>(delta_time * this->speed);
+    const sf::Vector2f curent_position = this->parent->get_position();
+    const sf::Vector2f next_position = curent_position + this->direction * amount_to_move;
+    const sf::Vector2i bad_direction = -1 * sf::Vector2i(this->direction);  // Inverse of our current direction
+    sf::Vector2i new_direction = directions[(rand() % 4)];
+
+    switch (this->state) {
+        case ROAMING:
+            if (!this->valid_move(next_position) || LevelSystem::get_tile_at(curent_position) == LevelSystem::WAYPOINT) {  // Wall in front or at waypoint
+                // Start rotate
+                this->state = ROTATING;
+            } else {
+                // Keep moving
+                this->move(this->direction * amount_to_move);
+            }
+            break;
+
+        case ROTATING:
+            while (new_direction == bad_direction || LevelSystem::get_tile_at(curent_position + (sf::Vector2f(new_direction) * LevelSystem::get_tile_size())) == LevelSystem::WALL) {  // Don't reverse and don't pick a direction that will lead to a wall
+                new_direction = directions[(rand() % 4)];
+            }
+            this->direction = sf::Vector2f(new_direction);
+            this->state = ROTATED;
+            break;
+
+        case ROTATED:
+            // Have we left the waypoint?
+            if (LevelSystem::get_tile_at(curent_position) != LevelSystem::WAYPOINT) {
+                this->state = ROAMING;  // Yes
+            }
+            move(this->direction * amount_to_move);  // No
+            break;
+    }
+    ActorMovementComponent::update(delta_time);
+}

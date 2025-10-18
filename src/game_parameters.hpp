@@ -7,6 +7,6 @@ struct Parameters {
     static constexpr float time_step = 0.017f; // 60 fps
     static constexpr const char* pacman = "res/levels/pacman.txt";
     static constexpr float player_speed = 200.f;
-    static constexpr float ghost_speed = 200.f;
-    static constexpr float entity_size = 9.0f;
+    static constexpr float ghost_speed = 300.f;
+    static constexpr float entity_size = 12.0f;
 };

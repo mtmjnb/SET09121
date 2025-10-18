@@ -45,4 +45,9 @@ class PlayerMovementComponent : public ActorMovementComponent {
 class EnemyAIComponent : public ActorMovementComponent {
     public:
         EnemyAIComponent(Entity* parent);
+        void update(const float& delta_time) override;
+    protected:
+        sf::Vector2f direction;
+        enum state { ROAMING, ROTATING, ROTATED };
+        state state;
 };
