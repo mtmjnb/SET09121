@@ -2,8 +2,6 @@
 #include "game_system.hpp"
 #include "renderer.hpp"
 
-EntityManager Scene::entity_manager;
-
 void Scene::update(const float& delta_time) {
     Renderer::update(delta_time);
     for (std::shared_ptr<Entity>& entity : entity_manager.list) {

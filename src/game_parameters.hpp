@@ -17,4 +17,5 @@ struct Parameters {
     };
     static constexpr const char* pacman = "res/levels/pacman.txt";
     static constexpr float player_speed = 400.f;
+    static constexpr float entity_size = 16.0f;
 };

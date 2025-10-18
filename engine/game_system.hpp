@@ -1,12 +1,13 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "entity.hpp"
+#include "ecm.hpp"
 
 class Scene {
     public:
         Scene() = default;
         virtual void load() = 0;
-        std::vector<std::shared_ptr<Entity>>& get_entities() {return entity_manager.list;}  // TODO
+        std::vector<std::shared_ptr<Entity>>& get_entities() {return entity_manager.list;}
 
         virtual void update(const float& delta_time);  // Update all entities in the scene
         virtual void render();  // Render all entities in the scene
@@ -15,7 +16,7 @@ class Scene {
         virtual ~Scene() = default;
 
     protected:
-        static EntityManager entity_manager;
+        EntityManager entity_manager;
 };
 
 class GameSystem {

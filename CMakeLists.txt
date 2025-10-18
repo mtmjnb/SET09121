@@ -16,7 +16,7 @@ set(SFML_INCS "lib/SFML/include")
 link_directories("${CMAKE_BINARY_DIR}/lib/SFML/lib")
 
 #### level system ####
-add_library(engine STATIC engine/game_system.cpp engine/entity.cpp engine/tile_level_loader/level_system.cpp "engine/renderer.cpp")
+add_library(engine STATIC engine/game_system.cpp engine/entity.cpp engine/tile_level_loader/level_system.cpp engine/renderer.cpp)
 target_include_directories(engine INTERFACE tile_level_loader)
 target_include_directories(engine PUBLIC engine)
 target_link_libraries(engine sfml-graphics)
@@ -28,7 +28,7 @@ add_custom_target(copy_resources ALL COMMAND ${CMAKE_COMMAND}
 )
 
 #### Practical 5 ####
-add_executable(pacman "src/main.cpp" "src/player.cpp" "src/scenes.cpp" "engine/renderer.cpp")
+add_executable(pacman "src/main.cpp"  "src/scenes.cpp" "src/components.cpp")
 target_include_directories(pacman PRIVATE ${SFML_INCS} .)
 target_link_libraries(pacman engine sfml-graphics)
 set_target_properties(pacman 
