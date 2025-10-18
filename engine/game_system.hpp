@@ -25,6 +25,7 @@ class GameSystem {
         static void clean();
         static void reset();
         static void set_active_scene(const std::shared_ptr<Scene>& active_scene);
+        static std::shared_ptr<Scene> get_active_scene();
 
     private:
         static void init();

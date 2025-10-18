@@ -51,3 +51,11 @@ class EnemyAIComponent : public ActorMovementComponent {
         enum state { ROAMING, ROTATING, ROTATED };
         state state;
 };
+
+ class PickupComponent : public ShapeComponent {
+    public:
+        PickupComponent(Entity* parent, bool big);
+        void update(const float& delta_time);
+    private:
+        bool big;
+};

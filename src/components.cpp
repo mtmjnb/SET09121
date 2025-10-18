@@ -1,7 +1,9 @@
 #include "components.hpp"
+#include "engine/game_system.hpp"
 #include "engine/renderer.hpp"
 #include "engine/tile_level_loader/level_system.hpp"
 #include "game_parameters.hpp"
+#include "scenes.hpp"
 
 // ================================================================ ShapeComponent ================================================================
 
@@ -121,4 +123,25 @@ void EnemyAIComponent::update(const float& delta_time) {
             break;
     }
     ActorMovementComponent::update(delta_time);
+}
+
+// ================================================================ PickupComponent ================================================================
+
+PickupComponent::PickupComponent(Entity* parent, bool big)
+    : ShapeComponent(parent) {
+    this->big = big;
+}
+
+void PickupComponent::update(const float& delta_time) {
+    for (std::shared_ptr<Entity> entity : GameSystem::get_active_scene()->get_entities()) {  // Every entity in the scene
+        if (vector_distance(entity->get_position(), this->parent->get_position()) < 30.0f) {  // Within 30.f unit of me
+            std::vector<std::shared_ptr<PlayerMovementComponent>> component =
+                entity->get_compatible_components<PlayerMovementComponent>();  // Get the entity PlayerMovementComponent, if it has one
+            if (!component.empty()) {  // If it has one
+                // nom nom
+                this->parent->set_for_delete();  // Delete myself
+                break;  // Stop looking
+            }
+        }
+    }
 }

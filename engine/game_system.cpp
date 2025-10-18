@@ -7,6 +7,16 @@ void Scene::update(const float& delta_time) {
     for (std::shared_ptr<Entity>& entity : entity_manager.list) {
         entity->update(delta_time);
     }
+    
+    // Remove all entities marked for deletion
+    auto new_end = std::remove_if(
+        entity_manager.list.begin(),
+        entity_manager.list.end(),
+        [](const std::shared_ptr<Entity>& entity) {
+            return entity->is_for_deletion();
+        }
+    );
+    entity_manager.list.erase(new_end, entity_manager.list.end());
 }
 
 void Scene::render() {
@@ -63,4 +73,8 @@ void GameSystem::start(unsigned int width, unsigned int height, const std::strin
 
 void GameSystem::set_active_scene(const std::shared_ptr<Scene>& active_scene) {
     GameSystem::active_scene = active_scene;
+}
+
+std::shared_ptr<Scene> GameSystem::get_active_scene() {
+    return GameSystem::active_scene;
 }
