@@ -2,6 +2,8 @@
 #include "game_system.hpp"
 #include "renderer.hpp"
 
+// ================================================================ Scene ================================================================
+
 void Scene::update(const float& delta_time) {
     Renderer::update(delta_time);
     for (std::shared_ptr<Entity>& entity : entity_manager.list) {
@@ -27,22 +29,12 @@ void Scene::render() {
 
 void Scene::unload() {}
 
+// ================================================================ GameSystem ================================================================
+
 std::shared_ptr<Scene> GameSystem::active_scene;
 
-void GameSystem::init() {}
-
-void GameSystem::update(const float& delta_time) {
-    GameSystem::active_scene->update(delta_time);
-}
-
-void GameSystem::render() {
-    GameSystem::active_scene->render();
-}
-
-void GameSystem::clean() {}
-
 void GameSystem::start(unsigned int width, unsigned int height, const std::string& name, const float& time_step) {
-    sf::RenderWindow window(sf::VideoMode({width, height}), name);
+    sf::RenderWindow window(sf::VideoMode({ width, height }), name);
     Renderer::initialise(window);
     GameSystem::init();
     sf::Event event;
@@ -69,6 +61,20 @@ void GameSystem::start(unsigned int width, unsigned int height, const std::strin
     }
     window.close();
     clean();
+}
+
+void GameSystem::init() {}
+
+void GameSystem::update(const float& delta_time) {
+    GameSystem::active_scene->update(delta_time);
+}
+
+void GameSystem::render() {
+    GameSystem::active_scene->render();
+}
+
+void GameSystem::clean() {
+    GameSystem::active_scene->unload();
 }
 
 void GameSystem::set_active_scene(const std::shared_ptr<Scene>& active_scene) {
