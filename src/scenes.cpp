@@ -34,6 +34,33 @@ void PhysicsScene::load() {
         b2Body_ApplyAngularImpulse(body, 5.0f, true);
         bodies.push_back(body);
     }
+
+    sf::Vector2f walls[] = {
+        // Top
+        sf::Vector2f(Parameters::game_width * 0.5f, 5.0f), sf::Vector2f(Parameters::game_width, 10.0f),
+        // Bottom
+        sf::Vector2f(Parameters::game_width * 0.5f, Parameters::game_height - 5.f), sf::Vector2f(Parameters::game_width, 10.0f),
+        // Left
+        sf::Vector2f(5.f, Parameters::game_height * 0.5f), sf::Vector2f(10.0f, Parameters::game_height),
+        // Right
+        sf::Vector2f(Parameters::game_width - 5.0f, Parameters::game_height * 0.5f), sf::Vector2f(10.0f, Parameters::game_height)
+    };
+
+    // Build Walls
+    for (int i = 0; i < 7; i += 2) {
+        // Create SFML shapes for each wall
+        std::shared_ptr<sf::RectangleShape> shape = std::make_shared<sf::RectangleShape>();
+        sf::Vector2f wall_size = walls[i + 1];
+        shape->setSize(wall_size);
+        shape->setOrigin(wall_size.x * 0.5f, wall_size.y * 0.5f);
+        shape->setPosition(walls[i]);
+        shape->setFillColor(sf::Color::White);
+        sprites.push_back(shape);
+        // Create a static physics body for the wall
+        b2BodyId body = box2d::create_physics_box(world_id, false, shape);
+        b2Body_ApplyAngularImpulse(body, 5.0f, true);
+        bodies.push_back(body);
+    }
 }
 
 void PhysicsScene::update(const float& delta_time) {
@@ -44,7 +71,9 @@ void PhysicsScene::update(const float& delta_time) {
         // Sync Sprites to physics position
         sprites[i]->setPosition(box2d::invert_height(box2d::bv2_to_sv2(b2Body_GetPosition(bodies[i]))));
         // Sync Sprites to physics Rotation
-        sprites[i]->setRotation((180 / Parameters::pi) * asin(b2Body_GetRotation(bodies[i]).s));
+        b2Rot rotation = b2Body_GetRotation(bodies[i]);
+        float angle_radians = atan2(rotation.s, rotation.c);
+        sprites[i]->setRotation(angle_radians * (180.0f / Parameters::pi));
     }
 }
 
