@@ -10,6 +10,7 @@ class ShapeComponent : public Component {
         void render() override;
 
         sf::Shape& get_shape() const;
+        std::shared_ptr<sf::Shape> get_shape_ptr() const;
 
         template <typename T, typename... Targs> void set_shape(Targs... params) {
             shape.reset(new T(params...));

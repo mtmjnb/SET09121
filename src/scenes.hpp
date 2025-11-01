@@ -20,5 +20,5 @@ public:
 private:
     b2WorldId world_id;  // An id to the physic world
     std::vector<b2BodyId> bodies;
-    std::vector<std::shared_ptr<sf::RectangleShape>> sprites;
+    std::vector<std::shared_ptr<Entity>> entities;
 };
