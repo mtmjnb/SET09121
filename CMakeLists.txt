@@ -33,7 +33,7 @@ add_custom_target(copy_resources ALL COMMAND ${CMAKE_COMMAND}
 )
 
 #### Practical 5 ####
-add_executable(physics "src/main.cpp" "src/scenes.cpp" "src/components.cpp")
+add_executable(physics "src/main.cpp" "src/scenes.cpp" "src/components.cpp" "src/b2d_utils.cpp")
 target_include_directories(physics SYSTEM PRIVATE ${SFML_INCS} ${B2D_INCS} .)
 target_link_libraries(physics engine sfml-graphics box2d)
 set_target_properties(physics

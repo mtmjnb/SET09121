@@ -3,9 +3,9 @@
 #include "scenes.hpp"
 
 int main() {
-    Scenes::physicsScene = std::make_shared<PhysicsScene>();
-    Scenes::physicsScene->load();
-    GameSystem::set_active_scene(Scenes::physicsScene);
+    Scenes::physics = std::make_shared<PhysicsScene>();
+    Scenes::physics->load();
+    GameSystem::set_active_scene(Scenes::physics);
     GameSystem::start(Parameters::game_width, Parameters::game_height, "Physics", Parameters::time_step);
     return 0;
 }

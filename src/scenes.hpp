@@ -7,16 +7,18 @@ auto vector_distance = [](sf::Vector2f point1, sf::Vector2f point2) -> float {
 };
 
 struct Scenes {
-    static std::shared_ptr<Scene> physicsScene;
+    static std::shared_ptr<Scene> physics;
 };
 
 class PhysicsScene : public Scene {
-private:
-    b2WorldId world_id;  // An id to the physic world
 public:
     PhysicsScene() = default;
     void update(const float& dt) override;
     void render() override;
     void load()override;
     void unload() override;
+private:
+    b2WorldId world_id;  // An id to the physic world
+    std::vector<b2BodyId> bodies;
+    std::vector<std::shared_ptr<sf::RectangleShape>> sprites;
 };
